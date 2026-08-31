@@ -1,0 +1,1314 @@
+```html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>نظام عيادة د. زهير السكران</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Arial,Tahoma,sans-serif;
+background:#f4f7fb;
+color:#172033
+}
+
+.sidebar{
+position:fixed;
+right:0;
+top:0;
+width:240px;
+height:100vh;
+background:#123b5d;
+color:#fff;
+padding:25px 15px;
+z-index:10
+}
+
+.logo{
+font-size:20px;
+font-weight:bold;
+text-align:center;
+margin-bottom:35px
+}
+
+.menu button{
+width:100%;
+padding:14px;
+margin:4px 0;
+border:0;
+border-radius:9px;
+background:transparent;
+color:#fff;
+text-align:right;
+font-size:15px;
+cursor:pointer
+}
+
+.menu button:hover,
+.menu button.active{
+background:#1d5b86
+}
+
+.main{
+margin-right:240px;
+padding:30px
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px
+}
+
+.header h1{
+margin:0
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:18px
+}
+
+.card{
+background:#fff;
+border-radius:15px;
+padding:22px;
+box-shadow:0 3px 15px #0000000b
+}
+
+.card small{
+color:#718096
+}
+
+.number{
+font-size:30px;
+font-weight:bold;
+margin-top:10px;
+color:#126b8f
+}
+
+.panel{
+background:#fff;
+border-radius:15px;
+padding:22px;
+margin-top:25px;
+box-shadow:0 3px 15px #0000000b
+}
+
+.panel-title{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px
+}
+
+.panel-title h2{
+margin:0
+}
+
+table{
+width:100%;
+border-collapse:collapse
+}
+
+th,td{
+padding:14px;
+border-bottom:1px solid #edf0f4;
+text-align:right
+}
+
+th{
+background:#f8fafc;
+color:#64748b
+}
+
+.btn{
+border:0;
+border-radius:8px;
+padding:10px 15px;
+cursor:pointer;
+font-family:inherit;
+font-size:14px
+}
+
+.primary{
+background:#126b8f;
+color:#fff
+}
+
+.primary:hover{
+background:#0d5875
+}
+
+.edit{
+background:#dbeafe;
+color:#1d4ed8
+}
+
+.delete{
+background:#fee2e2;
+color:#b91c1c
+}
+
+.gray{
+background:#e2e8f0;
+color:#172033
+}
+
+.search{
+width:100%;
+padding:13px 15px;
+border:1px solid #d9e0e8;
+border-radius:9px;
+font-size:15px;
+margin-bottom:20px;
+outline:none
+}
+
+.search:focus{
+border-color:#126b8f
+}
+
+.page{
+display:none
+}
+
+.page.active-page{
+display:block
+}
+
+.modal{
+position:fixed;
+inset:0;
+background:#0008;
+display:none;
+align-items:center;
+justify-content:center;
+padding:20px;
+z-index:100
+}
+
+.modal.show{
+display:flex
+}
+
+.modal-box{
+background:white;
+width:100%;
+max-width:720px;
+max-height:90vh;
+overflow:auto;
+border-radius:16px;
+padding:25px
+}
+
+.modal-head{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px
+}
+
+.modal-head h2{
+margin:0
+}
+
+.close{
+border:0;
+background:#f1f5f9;
+border-radius:50%;
+width:35px;
+height:35px;
+font-size:22px;
+cursor:pointer
+}
+
+.form-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:16px
+}
+
+.field{
+display:flex;
+flex-direction:column
+}
+
+.field.full{
+grid-column:1/-1
+}
+
+.field label{
+font-weight:bold;
+font-size:14px;
+margin-bottom:7px
+}
+
+.field input,
+.field select,
+.field textarea{
+padding:12px;
+border:1px solid #d9e0e8;
+border-radius:8px;
+font-family:inherit;
+font-size:15px;
+outline:none
+}
+
+.field textarea{
+min-height:100px;
+resize:vertical
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+border-color:#126b8f
+}
+
+.actions{
+display:flex;
+gap:10px;
+margin-top:20px
+}
+
+.profile{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px
+}
+
+.profile-item{
+background:#f8fafc;
+padding:16px;
+border-radius:10px
+}
+
+.profile-item small{
+display:block;
+color:#64748b;
+margin-bottom:6px
+}
+
+.empty{
+text-align:center;
+padding:45px;
+color:#718096
+}
+
+.toast{
+position:fixed;
+bottom:25px;
+left:25px;
+background:#123b5d;
+color:white;
+padding:14px 20px;
+border-radius:9px;
+display:none;
+z-index:200
+}
+
+.toast.show{
+display:block
+}
+
+@media(max-width:1000px){
+.cards{
+grid-template-columns:repeat(2,1fr)
+}
+}
+
+@media(max-width:800px){
+
+.sidebar{
+width:70px;
+padding:20px 8px
+}
+
+.logo{
+font-size:0
+}
+
+.logo:after{
+content:"🦷";
+font-size:25px
+}
+
+.menu button{
+font-size:0;
+text-align:center
+}
+
+.menu button:first-letter{
+font-size:20px
+}
+
+.main{
+margin-right:70px;
+padding:15px
+}
+
+.cards{
+grid-template-columns:1fr 1fr
+}
+
+.form-grid{
+grid-template-columns:1fr
+}
+
+.field.full{
+grid-column:auto
+}
+
+.profile{
+grid-template-columns:1fr
+}
+
+.header{
+flex-direction:column;
+align-items:flex-start;
+gap:10px
+}
+}
+
+@media(max-width:500px){
+
+.cards{
+grid-template-columns:1fr
+}
+
+.panel{
+padding:15px;
+overflow-x:auto
+}
+
+table{
+min-width:700px
+}
+}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+<div class="logo">
+🦷 عيادة د. زهير السكران
+</div>
+
+<div class="menu">
+
+<button class="active" onclick="openPage('dashboard',this)">
+🏠 الرئيسية
+</button>
+
+<button onclick="openPage('patients',this)">
+👥 المرضى
+</button>
+
+<button onclick="openPage('appointments',this)">
+📅 المواعيد
+</button>
+
+<button onclick="openPage('teeth',this)">
+🦷 الأسنان
+</button>
+
+<button onclick="openPage('treatments',this)">
+📋 العلاجات
+</button>
+
+<button onclick="openPage('accounts',this)">
+💰 الحسابات
+</button>
+
+<button onclick="openPage('reports',this)">
+📊 التقارير
+</button>
+
+<button onclick="openPage('settings',this)">
+⚙️ الإعدادات
+</button>
+
+</div>
+</aside>
+
+
+<main class="main">
+
+<div class="header">
+<h1 id="title">لوحة التحكم</h1>
+<div>👨‍⚕️ د. زهير السكران</div>
+</div>
+
+
+<!-- الرئيسية -->
+
+<section id="dashboard" class="page active-page">
+
+<div class="cards">
+
+<div class="card">
+<small>إجمالي المرضى</small>
+<div class="number" id="countPatients">0</div>
+</div>
+
+<div class="card">
+<small>المواعيد القادمة</small>
+<div class="number">5</div>
+</div>
+
+<div class="card">
+<small>إيرادات اليوم</small>
+<div class="number">$420</div>
+</div>
+
+<div class="card">
+<small>المبالغ المستحقة</small>
+<div class="number">$1,280</div>
+</div>
+
+</div>
+
+
+<div class="panel">
+
+<div class="panel-title">
+<h2>📅 مواعيد اليوم</h2>
+</div>
+
+<table>
+
+<tr>
+<th>الوقت</th>
+<th>المريض</th>
+<th>الإجراء</th>
+<th>الحالة</th>
+</tr>
+
+<tr>
+<td>09:00</td>
+<td>أحمد محمد</td>
+<td>تنظيف أسنان</td>
+<td>✅ حضر</td>
+</tr>
+
+<tr>
+<td>10:30</td>
+<td>سارة علي</td>
+<td>حشوة</td>
+<td>🟢 مؤكد</td>
+</tr>
+
+<tr>
+<td>12:00</td>
+<td>محمد حسن</td>
+<td>فحص</td>
+<td>🟢 مؤكد</td>
+</tr>
+
+<tr>
+<td>15:30</td>
+<td>ليلى أحمد</td>
+<td>علاج عصب</td>
+<td>🟢 مؤكد</td>
+</tr>
+
+</table>
+
+</div>
+
+</section>
+
+
+<!-- المرضى -->
+
+<section id="patients" class="page">
+
+<div class="panel">
+
+<div class="panel-title">
+
+<h2>👥 المرضى</h2>
+
+<button class="btn primary" onclick="addPatient()">
+➕ إضافة مريض
+</button>
+
+</div>
+
+<input
+class="search"
+id="search"
+placeholder="🔍 البحث بالاسم أو رقم الهاتف..."
+oninput="renderPatients()"
+>
+
+<div id="patientsList"></div>
+
+</div>
+
+</section>
+
+
+<!-- المواعيد -->
+
+<section id="appointments" class="page">
+
+<div class="panel">
+
+<h2>📅 المواعيد</h2>
+
+<div class="empty">
+
+<div style="font-size:50px">📅</div>
+
+<h3>قسم المواعيد</h3>
+
+<p>سيتم تطوير نظام المواعيد في الخطوة التالية.</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- الأسنان -->
+
+<section id="teeth" class="page">
+
+<div class="panel">
+
+<h2>🦷 الأسنان</h2>
+
+<div class="empty">
+
+<div style="font-size:50px">🦷</div>
+
+<h3>مخطط الأسنان</h3>
+
+<p>سيتم ربط مخطط الأسنان بملف كل مريض.</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- العلاجات -->
+
+<section id="treatments" class="page">
+
+<div class="panel">
+
+<h2>📋 العلاجات</h2>
+
+<div class="empty">
+
+<div style="font-size:50px">📋</div>
+
+<h3>العلاجات</h3>
+
+<p>سيتم إضافة سجل العلاجات والأسعار لاحقًا.</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- الحسابات -->
+
+<section id="accounts" class="page">
+
+<div class="panel">
+
+<h2>💰 الحسابات</h2>
+
+<div class="empty">
+
+<div style="font-size:50px">💰</div>
+
+<h3>الحسابات والمدفوعات</h3>
+
+<p>سيتم ربط الحسابات بملفات المرضى لاحقًا.</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- التقارير -->
+
+<section id="reports" class="page">
+
+<div class="panel">
+
+<h2>📊 التقارير</h2>
+
+<div class="empty">
+
+<div style="font-size:50px">📊</div>
+
+<h3>التقارير</h3>
+
+<p>سيتم إنشاء التقارير والإحصائيات لاحقًا.</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- الإعدادات -->
+
+<section id="settings" class="page">
+
+<div class="panel">
+
+<h2>⚙️ الإعدادات</h2>
+
+<div class="empty">
+
+<div style="font-size:50px">⚙️</div>
+
+<h3>إعدادات العيادة</h3>
+
+<p>سيتم إضافة إعدادات النظام لاحقًا.</p>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- نافذة إضافة / تعديل -->
+
+<div class="modal" id="patientModal">
+
+<div class="modal-box">
+
+<div class="modal-head">
+
+<h2 id="modalTitle">إضافة مريض جديد</h2>
+
+<button class="close" onclick="closeModal()">×</button>
+
+</div>
+
+
+<form id="patientForm" onsubmit="savePatient(event)">
+
+<input type="hidden" id="patientId">
+
+
+<div class="form-grid">
+
+<div class="field">
+
+<label>اسم المريض *</label>
+
+<input id="name" required>
+
+</div>
+
+
+<div class="field">
+
+<label>رقم الهاتف *</label>
+
+<input id="phone" required>
+
+</div>
+
+
+<div class="field">
+
+<label>تاريخ الميلاد</label>
+
+<input id="birth" type="date">
+
+</div>
+
+
+<div class="field">
+
+<label>الجنس</label>
+
+<select id="gender">
+
+<option value="">اختر</option>
+<option>ذكر</option>
+<option>أنثى</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>البريد الإلكتروني</label>
+
+<input id="email" type="email">
+
+</div>
+
+
+<div class="field">
+
+<label>العنوان</label>
+
+<input id="address">
+
+</div>
+
+
+<div class="field full">
+
+<label>ملاحظات</label>
+
+<textarea id="notes"></textarea>
+
+</div>
+
+</div>
+
+
+<div class="actions">
+
+<button class="btn primary" type="submit">
+💾 حفظ
+</button>
+
+<button class="btn gray" type="button" onclick="closeModal()">
+إلغاء
+</button>
+
+</div>
+
+</form>
+
+</div>
+</div>
+
+
+<!-- ملف المريض -->
+
+<div class="modal" id="profileModal">
+
+<div class="modal-box">
+
+<div class="modal-head">
+
+<h2>📂 ملف المريض</h2>
+
+<button class="close" onclick="closeProfile()">×</button>
+
+</div>
+
+<div id="profileContent"></div>
+
+</div>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+let patients =
+JSON.parse(localStorage.getItem("clinicPatients")) || [
+
+{
+id:1,
+name:"أحمد محمد",
+phone:"70 123 456",
+birth:"",
+gender:"ذكر",
+email:"",
+address:"",
+notes:""
+},
+
+{
+id:2,
+name:"سارة علي",
+phone:"71 456 789",
+birth:"",
+gender:"أنثى",
+email:"",
+address:"",
+notes:""
+},
+
+{
+id:3,
+name:"محمد حسن",
+phone:"76 222 333",
+birth:"",
+gender:"ذكر",
+email:"",
+address:"",
+notes:""
+}
+
+];
+
+
+function saveData(){
+
+localStorage.setItem(
+"clinicPatients",
+JSON.stringify(patients)
+);
+
+}
+
+
+function openPage(id,button){
+
+document.querySelectorAll(".page")
+.forEach(p=>p.classList.remove("active-page"));
+
+document.getElementById(id)
+.classList.add("active-page");
+
+document.querySelectorAll(".menu button")
+.forEach(b=>b.classList.remove("active"));
+
+button.classList.add("active");
+
+
+const titles={
+dashboard:"لوحة التحكم",
+patients:"المرضى",
+appointments:"المواعيد",
+teeth:"الأسنان",
+treatments:"العلاجات",
+accounts:"الحسابات",
+reports:"التقارير",
+settings:"الإعدادات"
+};
+
+document.getElementById("title").textContent=titles[id];
+
+if(id==="patients"){
+renderPatients();
+}
+
+}
+
+
+function renderPatients(){
+
+const box=document.getElementById("patientsList");
+
+const search=
+document.getElementById("search")
+.value
+.trim()
+.toLowerCase();
+
+
+const result=patients.filter(p=>
+p.name.toLowerCase().includes(search) ||
+p.phone.toLowerCase().includes(search)
+);
+
+
+if(result.length===0){
+
+box.innerHTML=`
+
+<div class="empty">
+
+<div style="font-size:45px">👥</div>
+
+<h3>لا يوجد مرضى</h3>
+
+<p>لم يتم العثور على مريض مطابق للبحث.</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+let html=`
+
+<table>
+
+<tr>
+<th>#</th>
+<th>الاسم</th>
+<th>الهاتف</th>
+<th>الجنس</th>
+<th>الإجراءات</th>
+</tr>
+`;
+
+
+result.forEach((p,i)=>{
+
+html+=`
+
+<tr>
+
+<td>${i+1}</td>
+
+<td>
+<strong>${safe(p.name)}</strong>
+</td>
+
+<td>${safe(p.phone)}</td>
+
+<td>${safe(p.gender||"-")}</td>
+
+<td>
+
+<button class="btn primary"
+onclick="viewPatient(${p.id})">
+📂 فتح الملف
+</button>
+
+<button class="btn edit"
+onclick="editPatient(${p.id})">
+✏️ تعديل
+</button>
+
+<button class="btn delete"
+onclick="deletePatient(${p.id})">
+🗑️ حذف
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+
+html+=`</table>`;
+
+box.innerHTML=html;
+
+}
+
+
+function addPatient(){
+
+document.getElementById("patientForm").reset();
+
+document.getElementById("patientId").value="";
+
+document.getElementById("modalTitle").textContent=
+"إضافة مريض جديد";
+
+document.getElementById("patientModal")
+.classList.add("show");
+
+}
+
+
+function editPatient(id){
+
+const p=patients.find(x=>x.id===id);
+
+if(!p)return;
+
+document.getElementById("patientId").value=p.id;
+document.getElementById("name").value=p.name;
+document.getElementById("phone").value=p.phone;
+document.getElementById("birth").value=p.birth||"";
+document.getElementById("gender").value=p.gender||"";
+document.getElementById("email").value=p.email||"";
+document.getElementById("address").value=p.address||"";
+document.getElementById("notes").value=p.notes||"";
+
+document.getElementById("modalTitle").textContent=
+"تعديل بيانات المريض";
+
+document.getElementById("patientModal")
+.classList.add("show");
+
+}
+
+
+function savePatient(e){
+
+e.preventDefault();
+
+const id=document.getElementById("patientId").value;
+
+const data={
+name:document.getElementById("name").value.trim(),
+phone:document.getElementById("phone").value.trim(),
+birth:document.getElementById("birth").value,
+gender:document.getElementById("gender").value,
+email:document.getElementById("email").value.trim(),
+address:document.getElementById("address").value.trim(),
+notes:document.getElementById("notes").value.trim()
+};
+
+
+if(id){
+
+const index=patients.findIndex(
+p=>p.id===Number(id)
+);
+
+if(index!==-1){
+
+patients[index]={
+id:Number(id),
+...data
+};
+
+showToast("تم تعديل بيانات المريض");
+
+}
+
+}else{
+
+patients.push({
+id:Date.now(),
+...data
+});
+
+showToast("تمت إضافة المريض بنجاح");
+
+}
+
+
+saveData();
+
+updateCount();
+
+closeModal();
+
+renderPatients();
+
+}
+
+
+function deletePatient(id){
+
+const p=patients.find(x=>x.id===id);
+
+if(!p)return;
+
+if(!confirm(
+"هل أنت متأكد من حذف المريض "+p.name+"؟"
+))return;
+
+patients=patients.filter(x=>x.id!==id);
+
+saveData();
+
+updateCount();
+
+renderPatients();
+
+showToast("تم حذف المريض");
+
+}
+
+
+function viewPatient(id){
+
+const p=patients.find(x=>x.id===id);
+
+if(!p)return;
+
+document.getElementById("profileContent").innerHTML=`
+
+<div class="profile">
+
+<div class="profile-item">
+<small>الاسم</small>
+<strong>${safe(p.name)}</strong>
+</div>
+
+<div class="profile-item">
+<small>رقم الهاتف</small>
+<strong>${safe(p.phone)}</strong>
+</div>
+
+<div class="profile-item">
+<small>تاريخ الميلاد</small>
+<strong>${formatDate(p.birth)}</strong>
+</div>
+
+<div class="profile-item">
+<small>الجنس</small>
+<strong>${safe(p.gender||"-")}</strong>
+</div>
+
+<div class="profile-item">
+<small>البريد الإلكتروني</small>
+<strong>${safe(p.email||"-")}</strong>
+</div>
+
+<div class="profile-item">
+<small>العنوان</small>
+<strong>${safe(p.address||"-")}</strong>
+</div>
+
+</div>
+
+<div class="panel">
+
+<h3>📝 ملاحظات</h3>
+
+<p>
+${safe(p.notes||"لا توجد ملاحظات")}
+</p>
+
+</div>
+
+<div class="panel">
+
+<h3>📅 المواعيد</h3>
+
+<div class="empty">
+لا توجد مواعيد مسجلة حاليًا.
+</div>
+
+</div>
+
+<div class="panel">
+
+<h3>🦷 الأسنان والعلاجات</h3>
+
+<div class="empty">
+سيتم ربط الأسنان والعلاجات بهذا الملف في الخطوة القادمة.
+</div>
+
+</div>
+
+<div class="panel">
+
+<h3>💰 الحسابات</h3>
+
+<div class="empty">
+لا توجد حسابات مسجلة حاليًا.
+</div>
+
+</div>
+
+`;
+
+document.getElementById("profileModal")
+.classList.add("show");
+
+}
+
+
+function closeModal(){
+
+document.getElementById("patientModal")
+.classList.remove("show");
+
+}
+
+
+function closeProfile(){
+
+document.getElementById("profileModal")
+.classList.remove("show");
+
+}
+
+
+function updateCount(){
+
+document.getElementById("countPatients")
+.textContent=patients.length;
+
+}
+
+
+function formatDate(date){
+
+if(!date)return"-";
+
+const p=date.split("-");
+
+if(p.length!==3)return date;
+
+return p[2]+"/"+p[1]+"/"+p[0];
+
+}
+
+
+function safe(text){
+
+return String(text)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+function showToast(message){
+
+const toast=document.getElementById("toast");
+
+toast.textContent=message;
+
+toast.classList.add("show");
+
+setTimeout(()=>{
+toast.classList.remove("show");
+},2500);
+
+}
+
+
+window.addEventListener("click",e=>{
+
+if(e.target===document.getElementById("patientModal")){
+closeModal();
+}
+
+if(e.target===document.getElementById("profileModal")){
+closeProfile();
+}
+
+});
+
+
+updateCount();
+
+</script>
+
+</body>
+</html>
+```
